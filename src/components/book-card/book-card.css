@@ -1,0 +1,10 @@
+.book-card{
+    background-color: aqua;
+    border: solid 1px black;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
