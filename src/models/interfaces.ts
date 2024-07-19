@@ -16,7 +16,7 @@ export interface IBook{
     author:string,
     description:string,
     summary:string,
-    publicationDate:Date,
+    publicationDate:string,
 }
 
 

@@ -20,7 +20,10 @@ export class ApiInteraction{
         throw `Error al iniciar sesión. (${response.status}: ${response.statusText})`;
       }
       const responseData = await response.json();
-      localStorage.setItem("userToken",responseData.data.token); //Save Token in LocalStorage
+      localStorage.setItem("userToken",responseData.data.token);
+      localStorage.setItem("userRole",responseData.data.role); //Save Token in LocalStorage
+      console.log(responseData.data);
+       //Save Unique Key
     } catch(error) {
       alert(error);
     }
@@ -54,7 +57,6 @@ export class ApiInteraction{
     const options={
       method:'GET',
       headers:{
-        'Content-Type':'application/json',
         'Authorization':`Bearer ${localStorage.getItem("userToken")}` //recover token from LocalStorage
       }
     };
@@ -69,5 +71,25 @@ export class ApiInteraction{
       alert(error)
     }
     return books;
+  }
+
+  //delete a book by id
+
+  async deleteBook(bookID:string):Promise<void>{
+    const options={
+      method:'DELETE',
+      headers:{
+        'Authorization':`Bearer ${localStorage.getItem("userToken")}` //recover token from LocalStorage
+      }
+    };
+    try {
+      const response:Response=await fetch(`${this.domain}/api/v1/books/${bookID}`,options);
+      if(!response.ok){
+        throw `Error al eliminar el libro. (${response.status}: ${response.statusText})`
+      }
+      alert("Libro eliminado correctamente");
+    } catch (error) {
+      alert(error);
+    }
   }
 }
