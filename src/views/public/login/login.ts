@@ -19,6 +19,7 @@ export function Login(){
     `;
 
     //view logic
+    
     LoginFormLogic();
     
     const registerBtn=document.querySelector("#registerBtn") as HTMLButtonElement;

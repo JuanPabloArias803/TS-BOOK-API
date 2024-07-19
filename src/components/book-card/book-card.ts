@@ -1,4 +1,4 @@
-import { IBook } from '../../controllers/interfaces';
+import { IBook } from '../../models/interfaces';
 import './book-card.css'
 
 export function BookCard(book:IBook){
