@@ -3,6 +3,13 @@ export interface IUserLogin{
     password:string
 }
 
+export interface IUserRegister{
+    name:string,
+    lastName: string,
+    email: string,
+    password: string
+}
+
 export interface IBook{
     id:string,
     title:string,
