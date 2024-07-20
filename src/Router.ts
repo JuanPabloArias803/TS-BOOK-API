@@ -23,10 +23,23 @@ export function Router(){
 
     const publicRoute=routes.public.find(route=>route.path===path);
     const privateRoute=routes.private.find(route=>route.path===path);
+    const adminRoute=routes.admin.find(route=>route.path===path);
 
     if(publicRoute){
         publicRoute.view();
         return;
+    }
+
+    if(adminRoute){
+        if(token){
+            if(CryptoJS.AES.decrypt(token,key).toString(CryptoJS.enc.Utf8).split(".").length===3){
+                const role:any=localStorage.getItem('UR');
+                if(CryptoJS.AES.decrypt(role,key).toString(CryptoJS.enc.Utf8)==="admin"){
+                    adminRoute.view();
+                return
+                }
+            }
+        }
     }
 
     if(privateRoute){
