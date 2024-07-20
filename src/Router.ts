@@ -1,9 +1,10 @@
 import { routes } from "./helpers/routes";
+import CryptoJS from 'crypto-js';
 
 export function Router(){
-
+    const key:string=import.meta.env.VITE_KEY //Simulate server .env variable
     const path:string=window.location.pathname;
-    const token:string|null=localStorage.getItem('userToken');
+    const token:any=localStorage.getItem('UT'); //recover token from LocalStorage
 
     if(path==='/'){
         NavigateTo('/login');
@@ -12,8 +13,11 @@ export function Router(){
 
     if(path==='/login'||path==='/register'){
         if(token){
-            NavigateTo('/dashboard');
-            return;
+            if(CryptoJS.AES.decrypt(token,key).toString(CryptoJS.enc.Utf8).split(".").length===3){
+                NavigateTo('/dashboard');
+                return;
+            }
+            
         }
     }
 
@@ -27,8 +31,10 @@ export function Router(){
 
     if(privateRoute){
         if(token){
-            privateRoute.view();
-            return;
+            if(CryptoJS.AES.decrypt(token,key).toString(CryptoJS.enc.Utf8).split(".").length===3){
+                privateRoute.view();
+                return;
+            }
         }
         NavigateTo('/login');
         return;
