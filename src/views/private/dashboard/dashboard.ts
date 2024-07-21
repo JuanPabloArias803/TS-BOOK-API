@@ -1,13 +1,17 @@
-import { BookCard } from "../../../components/book-card/book-card";
+import { BookCard, AdminBookCardLogic } from "../../../components/book-card/book-card";
+import { AdminNavbarLogic, Navbar, NavbarLogic } from '../../../components/navbar/navbar';
 import { ApiInteraction } from "../../../controllers/classes";
+import { isAdmin } from "../../../helpers/verifiers";
 import './dashboard.css';
 
 export async function Dashboard(){
     const $root = document.getElementById('root') as HTMLDivElement;
-
+    const role:any=sessionStorage.getItem('UR'); //recover role from sessionStorage
+    const cardRole=(role&&isAdmin(role))?"admin":"user" //check role
     //render view
 
     $root.innerHTML=`
+        ${Navbar(cardRole)}
         <div class="dashboard-container">
             <h1>Libros disponibles</h1>
             <div class="cards-container"></div>
@@ -20,12 +24,20 @@ export async function Dashboard(){
     const api=new ApiInteraction;
     const books=await api.consultBooks();
     let cards:string='';
-
     books.forEach(book => {
         const fecha = new Date(book.publicationDate);
-        cards+=BookCard({id:book.id,title:book.title,description:book.description,author:book.author,summary:book.summary,publicationDate:String(fecha.getFullYear())});
+        cards+=BookCard({id:book.id,title:book.title,description:book.description,author:book.author,summary:book.summary,publicationDate:String(fecha.getFullYear())},cardRole);
     });
     $cardsContainer.innerHTML=cards; //render cards
+
+    //Components Logic
+
+    NavbarLogic();
+    if(isAdmin(role)){
+        AdminBookCardLogic();
+        AdminNavbarLogic();
+    }
+    
 
 
     

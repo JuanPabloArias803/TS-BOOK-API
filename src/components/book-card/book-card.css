@@ -11,3 +11,12 @@
     gap: 10px;
     text-align: center;
 }
+
+.book-card span{
+    display: flex;
+    gap: 10px;
+}
+
+.book-card span button{
+    width: 70px;
+}

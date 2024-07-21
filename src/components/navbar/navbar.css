@@ -1,0 +1,21 @@
+nav{
+    padding: 20px;
+    background-color: black;
+    color: white;
+}
+
+nav ul{
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    list-style: none;
+}
+
+nav li{
+    cursor: none;
+}
+
+nav li:hover{
+    cursor: pointer;
+    color: #666;
+}
