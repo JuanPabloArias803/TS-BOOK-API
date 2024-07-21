@@ -1,11 +1,10 @@
 import { IBook, IUserLogin, IUserRegister } from "../models/interfaces";
 import CryptoJS from 'crypto-js';
+import { cryptoKey } from "../helpers/cryptoKey";
 
 export class ApiInteraction{
 
   readonly domain:string="http://190.147.64.47:5155"; //static API domain 
-
-  readonly key:string=import.meta.env.VITE_KEY //Simulate server .env variable
 
   //Login auth user
   
@@ -25,8 +24,8 @@ export class ApiInteraction{
         throw `Error al iniciar sesión. (${response.status}: ${response.statusText})`;
       }
       const responseData = await response.json();
-      localStorage.setItem("UT",CryptoJS.AES.encrypt(responseData.data.token, this.key).toString()); //Save encrypted Role in LocalStorage
-      localStorage.setItem("UR",CryptoJS.AES.encrypt(responseData.data.role, this.key).toString()); //Save encrypted Token in LocalStorage
+      sessionStorage.setItem("UT",CryptoJS.AES.encrypt(responseData.data.token, cryptoKey).toString()); //Save encrypted Role in sessionStorage
+      sessionStorage.setItem("UR",CryptoJS.AES.encrypt(responseData.data.role, cryptoKey).toString()); //Save encrypted Token in sessionStorage
     } catch(error) {
       alert(error);
     };
@@ -62,12 +61,12 @@ export class ApiInteraction{
   async consultBooks():Promise<IBook[]>{
 
     let books:IBook[]=[];
-    const token:any=localStorage.getItem("UT"); //recover token from LocalStorage
+    const token:any=sessionStorage.getItem("UT"); //recover token from sessionStorage
 
     const options={
       method:'GET',
       headers:{
-        'Authorization':`Bearer ${CryptoJS.AES.decrypt(token,this.key).toString(CryptoJS.enc.Utf8)}` //decrypt token
+        'Authorization':`Bearer ${CryptoJS.AES.decrypt(token,cryptoKey).toString(CryptoJS.enc.Utf8)}` //decrypt token
       }
     };
 
@@ -89,12 +88,12 @@ export class ApiInteraction{
 
   async deleteBook(bookID:string):Promise<void>{
 
-    const token:any=localStorage.getItem("UT"); //recover token from LocalStorage
+    const token:any=sessionStorage.getItem("UT"); //recover token from sessionStorage
 
     const options={
       method:'DELETE',
       headers:{
-        'Authorization':`Bearer ${CryptoJS.AES.decrypt(token,this.key).toString(CryptoJS.enc.Utf8)}` //decrypt token
+        'Authorization':`Bearer ${CryptoJS.AES.decrypt(token,cryptoKey).toString(CryptoJS.enc.Utf8)}` //decrypt token
       }
     };
 

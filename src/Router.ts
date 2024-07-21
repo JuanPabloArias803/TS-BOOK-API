@@ -1,10 +1,19 @@
 import { routes } from "./helpers/routes";
-import CryptoJS from 'crypto-js';
+import { isAdmin, validToken } from "./helpers/verifiers";
+
+export function NavigateTo(path: string) {
+    window.history.pushState({}, '', window.location.origin + path); //modify the path URL in browser
+    Router();
+}
 
 export function Router(){
-    const key:string=import.meta.env.VITE_KEY //Simulate server .env variable
-    const path:string=window.location.pathname;
-    const token:any=localStorage.getItem('UT'); //recover token from LocalStorage
+
+    const path:string=window.location.pathname;   //read the URL path
+    const token:any=sessionStorage.getItem('UT'); //recover encrypted token from sessionStorage
+    const role:any=sessionStorage.getItem('UR');  //recover encrypted role from sessionStorage
+    const publicRoute=routes.public.find(route=>route.path===path);    //search path in routes.public objects
+    const privateRoute=routes.private.find(route=>route.path===path);  //search path in routes.private objects
+    const adminRoute=routes.admin.find(route=>route.path===path);      //search path in routes.admin objects
 
     if(path==='/'){
         NavigateTo('/login');
@@ -12,53 +21,34 @@ export function Router(){
     }
 
     if(path==='/login'||path==='/register'){
-        if(token){
-            if(CryptoJS.AES.decrypt(token,key).toString(CryptoJS.enc.Utf8).split(".").length===3){
-                NavigateTo('/dashboard');
-                return;
-            }
-            
+        if(token&&role&&validToken(token)){ //if user is authed
+            NavigateTo('/dashboard');
+            return;
         }
     }
 
-    const publicRoute=routes.public.find(route=>route.path===path);
-    const privateRoute=routes.private.find(route=>route.path===path);
-    const adminRoute=routes.admin.find(route=>route.path===path);
-
     if(publicRoute){
-        publicRoute.view();
+        publicRoute.view(); //show to anyone
         return;
     }
 
     if(adminRoute){
-        if(token){
-            if(CryptoJS.AES.decrypt(token,key).toString(CryptoJS.enc.Utf8).split(".").length===3){
-                const role:any=localStorage.getItem('UR');
-                if(CryptoJS.AES.decrypt(role,key).toString(CryptoJS.enc.Utf8)==="admin"){
-                    adminRoute.view();
-                return
-                }
-            }
+        if(token&&role&&validToken(token)&&isAdmin(role)){ //if user is authed admin
+            adminRoute.view();
+            return;
         }
     }
 
     if(privateRoute){
-        if(token){
-            if(CryptoJS.AES.decrypt(token,key).toString(CryptoJS.enc.Utf8).split(".").length===3){
-                privateRoute.view();
-                return;
-            }
+        if(token&&role&&validToken(token)){ //if user is authed
+            privateRoute.view();
+            return;
         }
         NavigateTo('/login');
         return;
     }
 
-    NavigateTo('/not-found');
+    NavigateTo('/not-found'); //if path doesn't exist in routes
 }
 
-export function NavigateTo(path: string) {
-    window.history.pushState({}, '', window.location.origin + path);
-    Router();
-}
-  
-window.addEventListener('popstate', Router);
+window.addEventListener('popstate', Router); //listen URL changes
