@@ -1,13 +1,16 @@
-import { NavigateTo } from "../../../Router";
-import { LoginForm, LoginFormLogic } from "../../../components/login-form/login-form";
-import "./login.css"
+import { NavigateTo } from '../../../Router';
+import {
+  LoginForm,
+  LoginFormLogic,
+} from '../../../components/login-form/login-form';
+import './login.css';
 
-export function Login(){
-    const $root = document.getElementById('root') as HTMLDivElement;
+export function Login() {
+  const $root = document.getElementById('root') as HTMLDivElement;
 
-    //render view
+  //render view
 
-    $root.innerHTML=`
+  $root.innerHTML = `
         <div class="login-container">
             <h2>Iniciar Sesión</h2>
             ${LoginForm()}
@@ -18,10 +21,12 @@ export function Login(){
         <div>
     `;
 
-    //view logic
-    
-    LoginFormLogic();
+  //view logic
 
-    const registerBtn=document.querySelector("#registerBtn") as HTMLButtonElement;
-    registerBtn.addEventListener("click",()=>NavigateTo("/register"));
+  LoginFormLogic();
+
+  const registerBtn = document.querySelector(
+    '#registerBtn'
+  ) as HTMLButtonElement;
+  registerBtn.addEventListener('click', () => NavigateTo('/register'));
 }
