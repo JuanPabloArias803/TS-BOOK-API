@@ -1,20 +1,22 @@
-import { RegisterForm, RegisterFormLogic } from '../../../components/register-form/register-form';
-import './register.css'
+import {
+  RegisterForm,
+  RegisterFormLogic,
+} from '../../../components/register-form/register-form';
+import './register.css';
 
-export function Register(){
-    const $root = document.getElementById('root') as HTMLDivElement;
+export function Register() {
+  const $root = document.getElementById('root') as HTMLDivElement;
 
-    //render view
+  //render view
 
-    $root.innerHTML=`
+  $root.innerHTML = `
         <div class="register-container">
             <h2>Registro</h2>
             ${RegisterForm()}
         <div>
     `;
 
-    //view logic
+  //view logic
 
-    RegisterFormLogic();
-
+  RegisterFormLogic();
 }
