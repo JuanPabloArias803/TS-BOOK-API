@@ -84,6 +84,33 @@ export class ApiInteraction{
     return books;
   }
 
+  //consult only one book by id
+
+  async consultOneBook(bookID:string):Promise<IBook>{ 
+    let book:IBook={id:'',title:'',author:'',description:'',summary:'',publicationDate:''};
+    const token:any=sessionStorage.getItem("UT"); //recover token from sessionStorage
+
+    const options={
+      method:'GET',
+      headers:{
+        'Authorization':`Bearer ${CryptoJS.AES.decrypt(token,cryptoKey).toString(CryptoJS.enc.Utf8)}` //decrypt token
+      }
+    };
+
+    try {
+      const response:Response=await fetch(`${this.domain}/api/v1/books/${bookID}`,options);
+      if(!response.ok){
+        throw `Error inesperado en el sistema. (${response.status}: ${response.statusText})`
+      }
+      const responseData = await response.json();
+      book=responseData.data;
+    } catch (error) {
+      alert(error)
+    };
+
+    return book;
+  }
+
   //delete a book by id
 
   async deleteBook(bookID:string):Promise<void>{
@@ -129,6 +156,31 @@ export class ApiInteraction{
         throw `Error en el registro. (${response.status}: ${response.statusText})`
       }
       alert("Libro creado correctamente");
+    } catch (error) {
+      alert(error);
+    };
+  }
+
+  //update a book
+
+  async editBook(book:ICreateBook,bookID:string):Promise<void>{
+    const token:any=sessionStorage.getItem("UT"); //recover token from sessionStorage
+
+    const options={
+      method:'PATCH',
+      headers:{
+        'Authorization':`Bearer ${CryptoJS.AES.decrypt(token,cryptoKey).toString(CryptoJS.enc.Utf8)}`, //decrypt token
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(book)
+    };
+
+    try {
+      const response:Response=await fetch(`${this.domain}/api/v1/books/${bookID}`,options);
+      if(!response.ok){
+        throw `Error en el registro. (${response.status}: ${response.statusText})`
+      }
+      alert("Libro actualizado");
     } catch (error) {
       alert(error);
     };

@@ -1,4 +1,4 @@
-import { BookCard, AdminBookCardLogic } from "../../../components/book-card/book-card";
+import { BookCard, AdminBookCardLogic, BookCardLogic } from "../../../components/book-card/book-card";
 import { AdminNavbarLogic, Navbar, NavbarLogic } from '../../../components/navbar/navbar';
 import { ApiInteraction } from "../../../controllers/classes";
 import { isAdmin } from "../../../helpers/verifiers";
@@ -25,14 +25,17 @@ export async function Dashboard(){
     const books=await api.consultBooks();
     let cards:string='';
     books.forEach(book => {
-        const fecha = new Date(book.publicationDate);
-        cards+=BookCard({id:book.id,title:book.title,description:book.description,author:book.author,summary:book.summary,publicationDate:String(fecha.getFullYear())},cardRole);
+        const date = new Date(book.publicationDate);
+        const setDate=date.toISOString().substring(0,10).split("-");
+        cards+=BookCard({id:book.id,title:book.title,description:book.description,author:book.author,summary:book.summary,publicationDate:setDate[0]},cardRole);
     });
     $cardsContainer.innerHTML=cards; //render cards
 
     //Components Logic
 
+    BookCardLogic();
     NavbarLogic();
+    
     if(isAdmin(role)){
         AdminBookCardLogic();
         AdminNavbarLogic();

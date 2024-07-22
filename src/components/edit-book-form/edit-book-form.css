@@ -1,16 +1,16 @@
-#create-form{
+#edit-form{
     display: flex;
     flex-direction: column;
     gap: 10px;
     align-items: center;
 }
 
-#create-form textarea{
+#edit-form textarea{
     width: 200px;
     height: 70px;
 }
 
-#create-form button{
+#edit-form button{
     cursor: pointer;
     margin-top: 10px;
     width: 70px;
