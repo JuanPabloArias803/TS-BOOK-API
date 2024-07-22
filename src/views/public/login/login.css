@@ -1,18 +1,18 @@
-.login-container{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    justify-content: center;
-    align-items: center;
+.login-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
 }
 
-.login-container span{
-    display: flex;
-    gap: 10px;
+.login-container span {
+  display: flex;
+  gap: 10px;
 }
 
-.login-container button{
-    cursor: pointer;
+.login-container button {
+  cursor: pointer;
 }
