@@ -1,16 +1,17 @@
 import { NavigateTo } from "../../Router";
-import { ApiInteraction } from "../../models/classes";
+import { ApiInteraction } from "../../controllers/classes";
 import './login-form.css';
 
 //component structure
 
 export function LoginForm(){
+
     return `
     <form id="login-form">
-        <label for="login-form-useremail">Correo Electrónico:</label>
-        <input id="login-form-useremail" type="email" required>
-        <label for="login-form-userpassword">Contraseña:</label>
-        <input id="login-form-userpassword" type="password" required>
+        <label for="login-form-userEmail">Correo Electrónico:</label>
+        <input id="login-form-userEmail" type="email" required>
+        <label for="login-form-userPassword">Contraseña:</label>
+        <input id="login-form-userPassword" type="password" required>
         <button type="submit">Iniciar Sesión</button>
     </form>
     `;
@@ -20,16 +21,16 @@ export function LoginForm(){
 
 export function LoginFormLogic(){
     const $loginForm=document.querySelector("#login-form") as HTMLDivElement;
-    const $useremail=document.querySelector("#login-form-useremail") as HTMLInputElement;
-    const $userpassword=document.querySelector("#login-form-userpassword") as HTMLInputElement;
+    const $userEmail=document.querySelector("#login-form-userEmail") as HTMLInputElement;
+    const $userPassword=document.querySelector("#login-form-userPassword") as HTMLInputElement;
     const api=new ApiInteraction;
     $loginForm.addEventListener("submit",async (event)=>{
         event.preventDefault();
-        if(!$useremail.value||!$userpassword.value){
+        if(!$userEmail.value||!$userPassword.value){
             alert("Acceso inválido");
             return;
         }
-        await api.authUser({email:$useremail.value,password:$userpassword.value});
+        await api.authUser({email:$userEmail.value,password:$userPassword.value});
         NavigateTo('/dashboard');
     });
 }
