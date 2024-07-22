@@ -21,7 +21,7 @@ export function Login(){
     //view logic
     
     LoginFormLogic();
-    
+
     const registerBtn=document.querySelector("#registerBtn") as HTMLButtonElement;
     registerBtn.addEventListener("click",()=>NavigateTo("/register"));
 }

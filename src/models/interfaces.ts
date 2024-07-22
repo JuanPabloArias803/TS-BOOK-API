@@ -16,6 +16,15 @@ export interface IBook{
     author:string,
     description:string,
     summary:string,
-    publicationDate:Date,
+    publicationDate:string,
 }
+
+export interface ICreateBook{
+    title:string,
+    author:string,
+    description:string,
+    summary:string,
+    publicationDate:string,
+}
+
 
