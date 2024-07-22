@@ -20,3 +20,7 @@
 .book-card span button{
     width: 70px;
 }
+
+.book-card span button:hover{
+    cursor: pointer;
+}

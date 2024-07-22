@@ -1,4 +1,4 @@
-import { IBook, IUserLogin, IUserRegister } from "../models/interfaces";
+import { IBook, ICreateBook, IUserLogin, IUserRegister } from "../models/interfaces";
 import CryptoJS from 'crypto-js';
 import { cryptoKey } from "../helpers/cryptoKey";
 
@@ -108,4 +108,30 @@ export class ApiInteraction{
     };
     
   }
+
+  //create new book
+
+  async createBook(book:ICreateBook):Promise<void>{
+    const token:any=sessionStorage.getItem("UT"); //recover token from sessionStorage
+
+    const options={
+      method:'POST',
+      headers:{
+        'Authorization':`Bearer ${CryptoJS.AES.decrypt(token,cryptoKey).toString(CryptoJS.enc.Utf8)}`, //decrypt token
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(book)
+    };
+
+    try {
+      const response:Response=await fetch(`${this.domain}/api/v1/books`,options);
+      if(!response.ok){
+        throw `Error en el registro. (${response.status}: ${response.statusText})`
+      }
+      alert("Libro creado correctamente");
+    } catch (error) {
+      alert(error);
+    };
+  }
+  
 }

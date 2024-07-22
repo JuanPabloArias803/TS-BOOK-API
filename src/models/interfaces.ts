@@ -19,4 +19,12 @@ export interface IBook{
     publicationDate:string,
 }
 
+export interface ICreateBook{
+    title:string,
+    author:string,
+    description:string,
+    summary:string,
+    publicationDate:string,
+}
+
 

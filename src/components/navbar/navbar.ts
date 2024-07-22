@@ -33,5 +33,5 @@ export function NavbarLogic(){
 
 export function AdminNavbarLogic(){
     const $create=document.querySelector(".navCreate") as HTMLDataListElement;
-    $create.addEventListener("click",()=>NavigateTo("/")) //Navigate to create view
+    $create.addEventListener("click",()=>NavigateTo("/create-book")) //Navigate to create view
 }
