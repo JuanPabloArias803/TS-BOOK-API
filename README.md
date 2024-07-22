@@ -1,5 +1,4 @@
 # TS-BOOK-API Paperwork
----
 
 - Link del repositorio del proyecto: https://github.com/JuanPabloArias803/TS-BOOK-API.git
 
